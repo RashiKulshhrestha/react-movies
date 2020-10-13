@@ -6,7 +6,7 @@ const config = require("config");
 const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
 
-const User = require("../user/userModel");
+const User = require("../user/UserModel");
 
 // @route   GET api/auth
 // @desc    Authenticate User and Get Token
