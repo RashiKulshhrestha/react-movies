@@ -1,7 +1,9 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
+import Dashboard from "../dashboard/dashboard";
 
 export const Routes = () => {
     return(
@@ -9,6 +11,7 @@ export const Routes = () => {
             <Switch>
                 <Route exact path="/login" component={Login}></Route>
                 <Route exact path="/register" component={Register}></Route>
+                <PrivateRoute exact path ="/dashboard" component={Dashboard}></PrivateRoute>
             </Switch>
         </section>
     );
