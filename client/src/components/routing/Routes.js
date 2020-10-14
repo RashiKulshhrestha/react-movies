@@ -1,16 +1,14 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import UserLogin from "../auth/Login";
-import Alert from "../layout/Alert";
+import Login from "../auth/Login";
+import Register from "../auth/Register";
 
 export const Routes = () => {
     return(
         <section>
-            <Alert />
             <Switch>
-                <Route exact path="/register" component={UserRegister}></Route>
-                <Route exact path="/login" component={UserLogin}></Route>
-                <Route component={NotFound} />
+                <Route exact path="/login" component={Login}></Route>
+                <Route exact path="/register" component={Register}></Route>
             </Switch>
         </section>
     );

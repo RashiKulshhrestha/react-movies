@@ -1,93 +1,93 @@
-import React, { Fragment, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { setAlert } from "../../actions/alert";
-import PropTypes from "prop-types";
-import { register } from "../../actions/auth";
+import axios from "axios";
+import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT
+} from "./types";
+import setAuthToken from "../utils/setAuthToken";
 
-const Register = ({ setAlert, register, isAuthenticated }) => {
-  const [formData, setFormdata] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
-  });
-  //const { name, email, password, password2 } = formData;
-  const onChange = (e) => {
-    setFormdata({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    if (password !== password2) {
-      setAlert("Password do not match", "danger");
-    } else {
-      register({ name, email, password });
-    }
-  };
-  const { name, email, password, password2 } = formData;
-  if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+export const loadUser = () => async (dispatch) => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
   }
-  return (
-    <Fragment>
-      <h1 className="large text-primary">Sign Up</h1>
-      <p className="lead">
-        <i className="fas fa-user"></i> Create Your Account
-      </p>
-      <form className="form" onSubmit={(e) => onSubmit(e)}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={name}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => onChange(e)}
-            name="email"
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={password}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            name="password2"
-            value={password2}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <input type="submit" className="btn btn-primary" value="Register" />
-      </form>
-      <p className="my-1">
-        Already have an account? <Link to="/login">Sign In</Link>
-      </p>
-    </Fragment>
-  );
+
+  try {
+    const res = await axios.get("http://localhost:5000/api/auth");
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR,
+    });
+  }
 };
-Register.propTypes = {
-  setAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool,
+
+// register user
+export const register = ({ name, email, password }) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify({ name, email, password });
+  try {
+    const res = await axios.post("http://localhost:5000/api/users", body, config);
+
+    dispatch({
+      type: REGISTER_SUCCESS,
+      payload: res.data,
+    });
+    dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(console.log(error.msg, "danger")));
+    }
+    dispatch({
+      type: REGISTER_FAIL,
+    });
+  }
 };
-const mapStateProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
-export default connect(mapStateProps, { setAlert, register })(Register);
+
+// login user
+export const login = (email, password) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify({ email, password });
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth", body, config);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(console.log(error.msg, "danger")));
+    }
+    dispatch({
+      type: LOGIN_FAIL,
+    });
+  }
+};
+
+// logout
+
+export const logout = () => (dispatch) => {
+  dispatch({
+    type: LOGOUT,
+  });
+};
