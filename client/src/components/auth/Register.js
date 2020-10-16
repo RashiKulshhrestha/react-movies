@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -32,7 +32,7 @@ const Register = ({ register, isAuthenticated }) => {
     return <Redirect to="/dashboard" />;
   }
   return (
-    <Fragment className="container">
+    <div className="container">
       <h1 className="heading-h1">Sign Up</h1>
       <p className="lead">
         <i className="fas fa-user"></i> Create Your Account
@@ -79,7 +79,7 @@ const Register = ({ register, isAuthenticated }) => {
       <p className="my-1">
         Already have an account? <Link to="/login">Sign In</Link>
       </p>
-    </Fragment>
+    </div>
   );
 };
 Register.propTypes = {

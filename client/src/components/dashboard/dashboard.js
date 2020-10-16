@@ -1,118 +1,3 @@
-// import React from "react";
-// import { List, message, Avatar, Spin, Row, Col, Input } from 'antd';
-// import reqwest from 'reqwest';
-// import "./Dashboard.css";
-// import 'antd/dist/antd.css';
-
-import InfiniteScroll from 'react-infinite-scroller';
-
-// const { Search } = Input;
-// const API_KEY = 'a81ac4ea';
-// const SearchBox = ({searchHandler}) => {
-//     return (
-//         <Row>
-//             <Col span={12} offset={6}>
-//                 <Search
-//                     placeholder="enter movie, series, episode name"
-//                     enterButton="Search"
-//                     size="large"
-//                     onSearch={value => searchHandler(value)}
-//                 />
-//             </Col>
-//         </Row>
-//     )
-// }
-
-// class Dashboard extends React.Component {
-//   state = {
-//     data: [],
-//     loading: false,
-//     hasMore: true,
-//     q: 'batman'
-//   };
-
-//   componentDidMount() {
-//     this.fetchData(res => {
-//       this.setState({
-//         data: res.results,
-//       });
-//     });
-//   }
-
-//   fetchData = callback => {
-//     reqwest({
-//       url: `https://www.omdbapi.com/?apikey=${API_KEY}&&s=${this.state.q}`,
-//       type: 'json',
-//       method: 'get',
-//       contentType: 'application/json',
-//       success: res => {
-//         callback(res);
-//       },
-//     });
-//   };
-
-//   handleInfiniteOnLoad = () => {
-//     let { data } = this.state;
-//     this.setState({
-//       loading: true,
-//     });
-//     if (data.length > 14) {
-//       message.warning('Infinite List loaded all');
-//       this.setState({
-//         hasMore: false,
-//         loading: false,
-//       });
-//       return;
-//     }
-//     this.fetchData(res => {
-//       data = data.concat(res.results);
-//       this.setState({
-//         data,
-//         loading: false,
-//       });
-//     });
-//   };
-
-//   render() {
-//     return (
-//       <div className="demo-infinite-container">
-//           <SearchBox/>
-//         <InfiniteScroll
-//           initialLoad={false}
-//           pageStart={0}
-//           loadMore={this.handleInfiniteOnLoad}
-//           hasMore={!this.state.loading && this.state.hasMore}
-//           useWindow={false}
-//         >
-//           <List
-//             dataSource={this.state.data}
-//             renderItem={item => (
-//               <List.Item key={item.id}>
-//                 <List.Item.Meta
-//                   avatar={
-//                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-//                   }
-//                   title={<a href="https://ant.design">{item.name.last}</a>}
-//                   description={item.email}
-//                 />
-//                 <div>Content</div>
-//               </List.Item>
-//             )}
-//           >
-//             {this.state.loading && this.state.hasMore && (
-//               <div className="demo-loading-container">
-//                 <Spin />
-//               </div>
-//             )}
-//           </List>
-//         </InfiniteScroll>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Dashboard;
-
 import React, { useEffect, useState } from 'react';
 import { 
     Layout, 
@@ -121,9 +6,7 @@ import {
     Col, 
     Card, 
     Tag, 
-    Spin,
-    Select,
-    Button,
+    Spin, 
     Alert, 
     Modal, 
     Typography 
@@ -135,7 +18,7 @@ const { Header, Content, Footer } = Layout;
 const { Search } = Input;
 const { Meta } = Card;
 const TextTitle = Typography.Title;
-const { Option } = Select;
+
 
 const SearchBox = ({searchHandler}) => {
     return (
@@ -152,9 +35,7 @@ const SearchBox = ({searchHandler}) => {
     )
 }
 
-const ColCardBox = ({Title, imdbID, Poster, Type, ShowDetail, DetailRequest, ActivateModal }) => {
-    const [favouriteText,setFavouriteText] = useState("Add to Favourites");
-    const [disabled, setDisable] = useState(false);
+const ColCardBox = ({Title, imdbID, Poster, Type, ShowDetail, DetailRequest, ActivateModal}) => {
 
     const clickHandler = () => {
 
@@ -162,7 +43,7 @@ const ColCardBox = ({Title, imdbID, Poster, Type, ShowDetail, DetailRequest, Act
         ActivateModal(true);
         DetailRequest(true);
 
-        fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${API_KEY}`)
+        fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=${API_KEY}`)
         .then(resp => resp)
         .then(resp => resp.json())
         .then(response => {
@@ -175,32 +56,27 @@ const ColCardBox = ({Title, imdbID, Poster, Type, ShowDetail, DetailRequest, Act
     }
 
     return (
-        <Col className="gutter-row" span={4}>
+        <Col style={{margin: '20px 0'}} className="gutter-row" span={4}>
             <div className="gutter-box">
                 <Card
+                    style={{ width: 200 }}
                     cover={
                         <img
                             alt={Title}
                             src={Poster === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster}
-                            onClick={() => clickHandler()}
-                            
                         />
                     }
-                   
+                    onClick={() => clickHandler()}
                 >
                     <Meta
                             title={Title}
                             description={false}
                     />
-                    <Row className="gutter-row">
+                    <Row style={{marginTop: '10px'}} className="gutter-row">
                         <Col>
                             <Tag color="magenta">{Type}</Tag>
                         </Col>
-                        <Col>
-                          <i className="fa fa-thumb-tack" aria-hidden="true"></i>
-                        </Col>
                     </Row>
-                    
                 </Card>
             </div>
         </Col>
@@ -210,7 +86,7 @@ const ColCardBox = ({Title, imdbID, Poster, Type, ShowDetail, DetailRequest, Act
 const MovieDetail = ({Title, Poster, imdbRating, Rated, Runtime, Genre, Plot}) => {
     return (
         <Row>
-            <Col span={11} >
+            <Col span={11}>
                 <img 
                     src={Poster === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster} 
                     alt={Title} 
@@ -220,11 +96,11 @@ const MovieDetail = ({Title, Poster, imdbRating, Rated, Runtime, Genre, Plot}) =
                 <Row>
                     <Col span={21}>
                         <TextTitle level={4}>{Title}</TextTitle></Col>
-                    <Col span={3} >
+                    <Col span={3} style={{textAlign:'right'}}>
                         <TextTitle level={4}><span style={{color: '#41A8F8'}}>{imdbRating}</span></TextTitle>
                     </Col>
                 </Row>
-                <Row>
+                <Row style={{marginBottom: '20px'}}>
                     <Col>
                         <Tag>{Rated}</Tag> 
                         <Tag>{Runtime}</Tag> 
@@ -240,18 +116,12 @@ const MovieDetail = ({Title, Poster, imdbRating, Rated, Runtime, Genre, Plot}) =
 }
 
 const Loader = () => (
-    <div className="spin">
+    <div style={{margin: '20px 0', textAlign: 'center'}}>
         <Spin />
     </div>
 )
 
-function Dashboard() {
-    this.state = {
-        data: [],
-        loading: false,
-        hasMore: true,
-    };
-
+function App() {
 
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -260,14 +130,15 @@ function Dashboard() {
     const [activateModal, setActivateModal] = useState(false);
     const [detail, setShowDetail] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
-    
-    
+
+
     useEffect(() => {
 
         setLoading(true);
         setError(null);
         setData(null);
-        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&&s=${q}`)
+
+        fetch(`http://www.omdbapi.com/?s=${q}&apikey=${API_KEY}`)
         .then(resp => resp)
         .then(resp => resp.json())
         .then(response => {
@@ -287,49 +158,27 @@ function Dashboard() {
 
     }, [q]);
 
-    const handleInfiniteOnLoad = () => {
-        let { data } = this.state;
-        this.setState({
-            loading: true,
-        });
-        this.fetchData(res => {
-            data = data.concat(res.results);
-            this.setState({
-            data,
-            loading: false,
-            });
-        });
-        };
-
+    
     return (
         <div className="App">
             <Layout className="layout">
                 <Header>
-                    <div>
-                        <TextTitle className="header-omdb" level={3}>OMDB MOVIES
-                            <Button>Logout</Button>
-                        </TextTitle>
+                    <div style={{ textAlign: 'center'}}>
+                        <TextTitle style={{color: '#ffffff', marginTop: '14px'}} level={3}>OMDB API + React</TextTitle>
                     </div>
                 </Header>
-                <Content>
-                    <div>
-                    <div className="search-bar">
+                <Content style={{ padding: '0 50px' }}>
+                    <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
                         <SearchBox searchHandler={setQuery} />
-                    </div>
-                    <InfiniteScroll
-                        initialLoad={false}
-                        pageStart={0}
-                        loadMore={handleInfiniteOnLoad}
-                        hasMore={!this.state.loading && this.state.hasMore}
-                        useWindow={false}
-                    >
+                        <br />
+                        
                         <Row gutter={16} type="flex" justify="center">
                             { loading &&
                                 <Loader />
                             }
 
                             { error !== null &&
-                                <div className="danger-alert">
+                                <div style={{margin: '20px 0'}}>
                                     <Alert message={error} type="error" />
                                 </div>
                             }
@@ -344,8 +193,6 @@ function Dashboard() {
                                 />
                             ))}
                         </Row>
-                    </InfiniteScroll>
-                        
                     </div>
                     <Modal
                         title='Detail'
@@ -360,12 +207,11 @@ function Dashboard() {
                             (<Loader />) 
                         }
                     </Modal>
-                    
                 </Content>
-                <Footer className="center">OMDB Movies ©2020</Footer>
+                <Footer style={{ textAlign: 'center' }}>OMDB Movies ©2019</Footer>
             </Layout>
         </div>
     );
 }
 
-export default Dashboard;
+export default App;
