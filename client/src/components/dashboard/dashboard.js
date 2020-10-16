@@ -246,7 +246,7 @@ const Loader = () => (
 )
 
 function Dashboard() {
-    state = {
+    this.state = {
         data: [],
         loading: false,
         hasMore: true,

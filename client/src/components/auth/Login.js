@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../actions/auth";
+import "./auth.css";
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormdata] = useState({
@@ -25,8 +26,8 @@ const Login = ({ login, isAuthenticated }) => {
     return <Redirect to="/dashboard" />;
   }
   return (
-    <Fragment>
-      <h1 className="large text-primary">Sign In</h1>
+    <Fragment className="container">
+      <h1 className="heading-h1">Sign In</h1>
       <p className="lead">
         <i className="fas fa-user"></i> Sign Into Your Account
       </p>
@@ -50,7 +51,7 @@ const Login = ({ login, isAuthenticated }) => {
             minLength="6"
           />
         </div>
-        <input type="submit" className="btn btn-primary" value="Login" />
+        <input type="submit" className="btn-primary" value="Login" />
       </form>
       <p className="my-1">
         Don't have an account? <Link to="/Register">Sign Up</Link>
