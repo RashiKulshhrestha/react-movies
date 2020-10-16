@@ -164,7 +164,7 @@ function App() {
             <Layout className="layout">
                 <Header>
                     <div style={{ textAlign: 'center'}}>
-                        <TextTitle style={{color: '#ffffff', marginTop: '14px'}} level={3}>OMDB API + React</TextTitle>
+                        <TextTitle style={{color: '#ffffff', marginTop: '14px'}} level={3}>OMDB APP</TextTitle>
                     </div>
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
