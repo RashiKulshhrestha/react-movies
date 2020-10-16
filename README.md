@@ -9,3 +9,4 @@ This app have features :
 ![Screenshot](o3.PNG)
 ![Screenshot](o4.PNG)
 
+#Run on the localhost using npm run dev
