@@ -9,7 +9,8 @@ import {
     Spin, 
     Alert, 
     Modal, 
-    Typography 
+    Typography, 
+    Button
 } from 'antd';
 import 'antd/dist/antd.css';
 
@@ -164,7 +165,9 @@ function App() {
             <Layout className="layout">
                 <Header>
                     <div style={{ textAlign: 'center'}}>
-                        <TextTitle style={{color: '#ffffff', marginTop: '14px'}} level={3}>OMDB APP</TextTitle>
+                        <TextTitle style={{color: '#ffffff', marginTop: '14px'}} level={3}><span>OMDB APP</span>
+                        <Button style={{marginLeft: '1000px'}}>Logout</Button></TextTitle>
+                        
                     </div>
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
