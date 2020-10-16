@@ -122,7 +122,7 @@ const Loader = () => (
     </div>
 )
 
-function App() {
+function Dashboard() {
 
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -217,4 +217,4 @@ function App() {
     );
 }
 
-export default App;
+export default Dashboard;
